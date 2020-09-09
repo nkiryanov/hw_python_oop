@@ -7,8 +7,10 @@ class Calculator:
         self.records = list()
         self.daily_stats = dict()
         # self.records is used for storing transactions only
-        # self.dict for storing dayly stats and for generating weekly stats.
-        # dict works faster and easier to use for lot of records in this case.
+        # self.dict for storing daily stats and for generating 
+        # weekly stats.
+        # dict works faster and easier to use for lot of records 
+        # in this case.
         # key = date, value = sum of daily amounts
 
     def add_record(self, record):
@@ -22,8 +24,8 @@ class Calculator:
             self.daily_stats[record.date] += record.amount
 
     def get_today_stats(self, today=None):
-        # The func returns today stats by dafault
-        # If date (today) is givien it return
+        # The func returns today stats by default
+        # If date (today) is given it return
         # specific date stats
  
         if today is None:

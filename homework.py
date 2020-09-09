@@ -75,7 +75,7 @@ class CashCalculator(Calculator):
     def __init__(self, limit):
         super().__init__(limit)
 
-    def get_today_cash_remained(self, currency):
+    def get_today_cash_remained(self, currency='rub'):
         currency_output = {'rub': 'руб',
                            'usd': 'USD',
                            'eur': 'Euro'}
@@ -114,3 +114,7 @@ class Record:
 
     def __str__(self):
         return f'amount = {self.amount}, date = {self.date}'
+
+calc = CashCalculator(1000)
+calc.add_record(Record(100, "На еду"))
+print(calc.get_today_cash_remained('eur'))

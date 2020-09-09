@@ -6,20 +6,31 @@ class Calculator:
         self.limit = limit
         self.records = list()
         self.daily_stats = dict()
+        # self.records is used for storing transactions only
+        # self.dict for storing dayly stats and for generating weekly stats.
+        # dict works faster and easier to use for lot of records in this case.
+        # key = date, value = sum of daily amounts
 
     def add_record(self, record):
+        # Add record to records list
         self.records.append(record)
+
+        # Save daily amounts in dict organised by date
         if record.date not in self.daily_stats:
             self.daily_stats[record.date] = record.amount
         else:
             self.daily_stats[record.date] += record.amount
 
-    def get_today_stats(self, date=None):
-        if date is None:
+    def get_today_stats(self, today=None):
+        # The func returns today stats by dafault
+        # If date (today) is givien it return
+        # specific date stats
+ 
+        if today is None:
             today = dt.datetime.now()
             today_date = today.date()
         else:
-            today_date = date
+            today_date = today
 
         if today_date in self.daily_stats:
             return self.daily_stats[today_date]
@@ -27,6 +38,10 @@ class Calculator:
             return 0
 
     def get_week_stats(self):
+        # The func return weekly stats
+        # It's sum daily stats that stores in dict
+        # for 7 days before today
+
         today = dt.datetime.now()
         today_date = today.date()
         period = dt.timedelta(days=1)
@@ -80,9 +95,10 @@ class CashCalculator(Calculator):
                     f'{currency_output[currency]}')
         elif cash_reminded == 0:
             return 'Денег нет, держись'
-        else:  # cash_reminded < 0
+        else:  # if cash_reminded < 0
+            cash_reminded = abs(cash_reminded)
             return (f'Денег нет, держись: твой долг - '
-                    f'{-cash_reminded} {currency_output[currency]}')
+                    f'{cash_reminded} {currency_output[currency]}')
 
 
 class Record:

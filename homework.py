@@ -114,7 +114,3 @@ class Record:
 
     def __str__(self):
         return f'amount = {self.amount}, date = {self.date}'
-
-calc = CashCalculator(1000)
-calc.add_record(Record(100, "На еду"))
-print(calc.get_today_cash_remained('eur'))

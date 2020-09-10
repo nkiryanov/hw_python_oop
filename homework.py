@@ -48,7 +48,7 @@ class CashCalculator(Calculator):
     RUB_RATE = 1
 
     POSITIVE_CASH_REMAINED = ('На сегодня осталось {cash_reminded} '
-                              '{currency_designation}')
+                              '{currency_name}')
     ZERO_CASH_REMAINED = 'Денег нет, держись'
     NEGATIVE_CASH_REMAINED = ('Денег нет, держись: твой долг - '
                               '{cash_reminded} {currency_name}')

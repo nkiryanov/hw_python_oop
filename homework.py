@@ -51,9 +51,15 @@ class CashCalculator(Calculator):
                               '{currency_designation}')
     ZERO_CASH_REMAINED = 'Денег нет, держись'
     NEGATIVE_CASH_REMAINED = ('Денег нет, держись: твой долг - '
-                              '{cash_reminded} {currency_designation}')
+                              '{cash_reminded} {currency_name}')
 
     def get_today_cash_remained(self, currency='rub'):
+        """ Why CURRENCIES on method level.
+        
+        Dictionary with CURRENCIES on class level works well, but it 
+        doesn't pass pytest tests.
+        """
+        
         CURRENCIES = {'rub': ['руб', self.RUB_RATE],
                       'usd': ['USD', self.USD_RATE],
                       'eur': ['Euro', self.EURO_RATE]
@@ -68,7 +74,7 @@ class CashCalculator(Calculator):
         if cash_reminded > 0:
             return self.POSITIVE_CASH_REMAINED.format(
                     cash_reminded=cash_reminded,
-                    currency_designation=CURRENCIES[currency][0]
+                    currency_name=CURRENCIES[currency][0]
                     )
         elif cash_reminded == 0:
             return self.ZERO_CASH_REMAINED
@@ -76,8 +82,8 @@ class CashCalculator(Calculator):
             cash_reminded = abs(cash_reminded)
             return self.NEGATIVE_CASH_REMAINED.format(
                     cash_reminded=cash_reminded,
-                    currency_designation=CURRENCIES[currency][0]
-                     )
+                    currency_name=CURRENCIES[currency][0]
+                    )
         
 
 class Record:

@@ -93,9 +93,9 @@ class CashCalculator(Calculator):
         """
         
         CURRENCIES = {
-            'rub': ['руб', self.RUB_RATE],
-            'usd': ['USD', self.USD_RATE],
-            'eur': ['Euro', self.EURO_RATE],
+            'rub': ('руб', self.RUB_RATE),
+            'usd': ('USD', self.USD_RATE),
+            'eur': ('Euro', self.EURO_RATE),
         }
 
         currency_name, currency_rate = CURRENCIES[currency]

@@ -2,6 +2,13 @@ import datetime as dt
 
 
 class Calculator:
+    """Basic class for extended calculators.
+    
+    It's a basic class that stores the records of Record class. 
+    Two methods return sums of the daily and weekly amount.
+    The parameter 'limit' doesn't use there. It is used in child classes. 
+    """
+
     def __init__(self, limit):
         self.limit = limit
         self.records = list()
@@ -27,6 +34,13 @@ class Calculator:
 
 
 class CaloriesCalculator(Calculator):
+    """CaloriesCalculator overview.
+
+    In addition to parent class it sums daily calories and returns 
+    how much left for today.
+    If a limit is reached it reminds about it.
+    """
+
     POSITIVE_CALORIES_REMAINED = (
         'Сегодня можно съесть что-нибудь ещё, но с '
         'общей калорийностью не '
@@ -47,6 +61,15 @@ class CaloriesCalculator(Calculator):
 
 
 class CashCalculator(Calculator):
+    """CashCalculator overview.
+
+    In addition to parent class it sums daily cash and returns 
+    how much left for today.
+    If currency specified an answer returns in that currency.
+    If a limit is reached it reminds about it.
+    If a limit is exceeded it returns a debt amount.
+    """
+
     USD_RATE = 75.20
     EURO_RATE = 88.90
     RUB_RATE = 1
@@ -96,6 +119,8 @@ class CashCalculator(Calculator):
         
 
 class Record:
+    """Stores records in a convenient form for calculator purposes."""
+
     DATE_FORMAT = '%d.%m.%Y'
     
     def __init__(self, amount, comment, date=None):

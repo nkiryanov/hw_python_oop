@@ -25,11 +25,11 @@ class Calculator:
 
     def get_week_stats(self):
         today = dt.date.today()
-        day_week_ago = today - dt.timedelta(days=6)
+        day_week_ago = today - dt.timedelta(days=7)
 
         return sum(
             record.amount for record in self.records
-            if day_week_ago <= record.date <= today
+            if day_week_ago < record.date <= today
             )
 
 
@@ -41,23 +41,22 @@ class CaloriesCalculator(Calculator):
     If a limit is reached it reminds about it.
     """
 
-    POSITIVE_CALORIES_REMAINED = (
+    REMAINED = (
         'Сегодня можно съесть что-нибудь ещё, но с '
         'общей калорийностью не '
         'более {calories_remained} кКал'
     )
-    NO_CALORIES_REMAINED = (
+    CALORIES_LEFT = (
         'Хватит есть!'
     )
 
     def get_calories_remained(self):
-        calories_remained = self.limit - self.get_today_stats()
-        if calories_remained > 0:
-            return self.POSITIVE_CALORIES_REMAINED.format(
-                calories_remained=calories_remained
-                )
-        else:
-            return self.NO_CALORIES_REMAINED
+        calories = self.limit - self.get_today_stats()
+        if calories > 0:
+            return self.REMAINED.format(calories_remained=calories)
+        
+        # remained <= 0
+        return self.CALORIES_LEFT
 
 
 class CashCalculator(Calculator):
@@ -74,14 +73,14 @@ class CashCalculator(Calculator):
     EURO_RATE = 88.90
     RUB_RATE = 1
 
-    POSITIVE_CASH_REMAINED = (
+    REMAINED = (
         'На сегодня осталось {cash_remained} {currency_name}'
     )
-    NEGATIVE_CASH_REMAINED = (
+    EXCEEDED = (
         'Денег нет, держись: твой долг - '
         '{cash_remained} {currency_name}'
     )
-    ZERO_CASH_REMAINED = (
+    CASH_LEFT = (
         'Денег нет, держись'
     )
 
@@ -98,24 +97,25 @@ class CashCalculator(Calculator):
             'eur': ('Euro', self.EURO_RATE),
         }
 
-        currency_name, currency_rate = CURRENCIES[currency]
-        cash_remained = self.limit - self.get_today_stats()
+        name, rate = CURRENCIES[currency]
+        cash = self.limit - self.get_today_stats()
         
-        if cash_remained == 0:
-            return self.ZERO_CASH_REMAINED
+        if cash == 0:
+            return self.CASH_LEFT
 
-        cash_remained = round(cash_remained / currency_rate, 2)
-        if cash_remained > 0:
-            return self.POSITIVE_CASH_REMAINED.format(
-                cash_remained=cash_remained,
-                currency_name=currency_name,
+        cash = round(cash / rate, 2)
+        if cash > 0:
+            return self.REMAINED.format(
+                cash_remained=cash,
+                currency_name=name,
                 )
-        else:  # if cash_remained < 0
-            cash_remained = abs(cash_remained)
-            return self.NEGATIVE_CASH_REMAINED.format(
-                cash_remained=cash_remained,
-                currency_name=currency_name,
-                )
+        
+        # cash < 0
+        cash = abs(cash)
+        return self.EXCEEDED.format(
+            cash_remained=cash,
+            currency_name=name,
+            )
         
 
 class Record:
